@@ -118,6 +118,7 @@
     <None Include="packages.config" />
     <Content Include="Views\Shared\Authentication.cshtml" />
     <Content Include="Views\Authentication\SignUp.cshtml" />
+    <Content Include="Views\Authentication\LogIn.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

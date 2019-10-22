@@ -11,5 +11,13 @@ namespace frontend_app.Controllers
         {
             return View();
         }
+
+        // Log In form
+        // GET: /LogIn, /Authentication/LogIn
+        [HttpGet]
+        public ActionResult LogIn()
+        {
+            return View();
+        }
     }
 }

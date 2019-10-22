@@ -14,6 +14,11 @@ namespace frontend_app
                             url: "SignUp",
                             defaults: new { controller = "Authentication", action = "SignUp" });
 
+            // Log In route
+            routes.MapRoute(name: "Log In",
+                            url: "LogIn",
+                            defaults: new { controller = "Authentication", action = "LogIn" });
+
             // Default route
             routes.MapRoute(name: "Default",
                             url: "{controller}/{action}/{id}",
