@@ -9,6 +9,11 @@ namespace frontend_app
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            // Sign Up route
+            routes.MapRoute(name: "Sign Up",
+                            url: "SignUp",
+                            defaults: new { controller = "Authentication", action = "SignUp" });
+
             // Default route
             routes.MapRoute(name: "Default",
                             url: "{controller}/{action}/{id}",

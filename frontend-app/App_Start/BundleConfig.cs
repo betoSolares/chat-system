@@ -7,7 +7,8 @@ namespace frontend_app
         public static void RegisterBundles(BundleCollection bundles)
         {
             // CSS
-
+            bundles.Add(new StyleBundle("~/bundles/style").Include(
+                        "~/Styles/authentication.css"));
             // JS
         }
     }

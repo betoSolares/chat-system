@@ -1,0 +1,34 @@
+﻿.authentication-container {
+    height: 100%;
+    margin: 0;
+    width: 100%;
+}
+
+.authentication-welcome {
+    background-color: #F76600;
+    color: #FFFFFF;
+    height: 100vh;
+}
+
+.authentication-form-container {
+    background-color: #212121;
+    color: #FFFFFF;
+    height: 100vh;
+}
+
+.authentication-button {
+    background-color: #F1B600 !important;
+    border-color: #F1B600 !important;
+}
+
+.authentication-input {
+    background-color: transparent !important;
+    color: #FFFFFF !important;
+    border-color: #F76600 !important;
+}
+
+@media only screen and (min-width: 768px) {
+    .authentication-form {
+        padding-top: 20%;
+    }
+}

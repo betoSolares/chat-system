@@ -1,0 +1,121 @@
+﻿@{
+    ViewBag.Title = "Sign Up";
+    Layout = "~/Views/Shared/Authentication.cshtml";
+}
+    <section class="hero is-fullheight">
+        <div class="columns authentication-container">
+            <div class="column is-6 authentication-welcome">
+                <h1 class="title has-text-centered has-text-white" style="padding-top: 15%">Registrate Ahora</h1>
+                <div class="content is-size-4 has-text-white" style="padding-top: 5%">
+                    <ul>
+                        <li>
+                            <p>
+                                <span class="icon"><i class="far fa-comments"></i></span>
+                                Únete a la conversación.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <span class="icon"><i class="far fa-file-alt"></i></span>
+                                Envía tus archivos favoritos.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <span class="icon"><i class="fas fa-globe-americas"></i></span>
+                                Conectate con gente de todas partes del mundo.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="container has-text-centered">
+                    <p class="is-size-5">¿Ya tienenes cuenta?</p>
+                    <a href="/LogIn" class="button authentication-button has-text-white is-rounded">Iniciar Sesion</a>
+                </div>
+            </div>
+            <div class="column is-6 authentication-form-container">
+                <form action="/SignUp" method="post" class="authentication-form">
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <div class="field">
+                                <label class="label has-text-white">Nombre</label>
+                            </div>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input class="input is-rounded authentication-input" type="text" name="name" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <div class="field">
+                                <label class="label has-text-white authentication-input">Apellido</label>
+                            </div>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input class="input is-rounded authentication-input" type="text" name="lastname" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <div class="field">
+                                <label class="label has-text-white">Email</label>
+                            </div>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input class="input is-rounded authentication-input" type="email" name="email" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <div class="field">
+                                <label class="label has-text-white">Nombre de usuario</label>
+                            </div>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input class="input is-rounded authentication-input" type="text" name="username" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <div class="field">
+                                <label class="label has-text-white">Contraseña</label>
+                            </div>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input class="input is-rounded authentication-input" type="password" name="password" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label"></div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <button class="button is-rounded authentication-button has-text-white is-centered" type="submit">Registrarse</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
