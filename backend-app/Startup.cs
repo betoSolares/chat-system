@@ -1,4 +1,5 @@
-﻿using backend_app.Data.Contexts;
+﻿using backend_app.Data.Collections;
+using backend_app.Data.Contexts;
 using backend_app.Domain.Contexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,6 +27,9 @@ namespace backend_app
             // Account Context
             services.Configure<AccountContext>(Configuration.GetSection(nameof(AccountContext)));
             services.AddSingleton<IAccountContext>(sp => sp.GetRequiredService<IOptions<AccountContext>>().Value);
+
+            // Account collection
+            services.AddSingleton<AccountCollection>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace backend_app.Resources
+namespace backend_app.Application.Resources
 {
     public class SignUpResource
     {

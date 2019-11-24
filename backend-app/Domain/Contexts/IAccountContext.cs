@@ -1,6 +1,6 @@
 ﻿namespace backend_app.Domain.Contexts
 {
-    interface IAccountContext
+    public interface IAccountContext
     {
         string CollectionName { get; set; }
         string ConnectionString { get; set; }
