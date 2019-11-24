@@ -24,9 +24,9 @@ namespace backend_app
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            // Account Context
-            services.Configure<AccountContext>(Configuration.GetSection(nameof(AccountContext)));
-            services.AddSingleton<IAccountContext>(sp => sp.GetRequiredService<IOptions<AccountContext>>().Value);
+            // Database Context
+            services.Configure<DatabaseContext>(Configuration.GetSection(nameof(DatabaseContext)));
+            services.AddSingleton<IDatabaseContext>(sp => sp.GetRequiredService<IOptions<DatabaseContext>>().Value);
 
             // Account collection
             services.AddSingleton<AccountCollection>();

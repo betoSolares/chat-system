@@ -11,11 +11,11 @@ namespace backend_app.Data.Collections
 
         /// <summary>Contructor</summary>
         /// <param name="context">The context of the collection</param>
-        public AccountCollection(IAccountContext context)
+        public AccountCollection(IDatabaseContext context)
         {
             MongoClient client = new MongoClient(context.ConnectionString);
             IMongoDatabase database = client.GetDatabase(context.DatabaseName);
-            _account = database.GetCollection<Account>(context.CollectionName);
+            _account = database.GetCollection<Account>("Accounts");
         }
 
         /// <summary>Get all items in the account collection</summary>
