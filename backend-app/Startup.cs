@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using backend_app.Data.Contexts;
+using backend_app.Domain.Contexts;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace backend_app
 {
@@ -19,6 +22,10 @@ namespace backend_app
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            // Account Context
+            services.Configure<AccountContext>(Configuration.GetSection(nameof(AccountContext)));
+            services.AddSingleton<IAccountContext>(sp => sp.GetRequiredService<IOptions<AccountContext>>().Value);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
