@@ -21,6 +21,9 @@ namespace backend_app.Domain.Models
         [BsonElement("username")]
         public string Username { get; set; }
 
+        [BsonElement("salt")]
+        public byte[] Salt { get; set; }
+
         [BsonElement("password")]
         public string Password { get; set; }
 
