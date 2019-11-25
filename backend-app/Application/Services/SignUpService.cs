@@ -7,20 +7,20 @@ using backend_app.Domain.Collections;
 using backend_app.Domain.Models;
 using backend_app.Domain.Services;
 using external_process.Encryption;
-
+​
 namespace backend_app.Application.Services
 {
     public class SignUpService : ISignUpService
     {
         private readonly IAccountCollection _accountCollection;
-
+​
         /// <summary>Constructor</summary>
         /// <param name="accountCollection">The account collection</param>
         public SignUpService(IAccountCollection accountCollection)
         {
             _accountCollection = accountCollection;
         }
-
+​
         /// <summary>Try to create a new account</summary>
         /// <param name="account">The account to add</param>
         /// <returns>A succesful response if it's created, otherwise failed response</returns>
@@ -28,10 +28,13 @@ namespace backend_app.Application.Services
         {
             try
             {
-                if (_accountCollection.GetByUsername(account.Username) == null)
+                if (await _accountCollection.GetByUsername(account.Username) == null)
                 {
-
-                    Account newAccount = await _accountCollection.Create(account);
+                    (byte[] salt, string password) = EncryptPassword(account.Password);
+                    Account newAccount = account;
+                    newAccount.Password = password;
+                    newAccount.Salt = salt;
+                    await _accountCollection.Create(newAccount);
                     return new Response<Account>(newAccount);
                 }
                 else
@@ -44,25 +47,23 @@ namespace backend_app.Application.Services
                 return new Response<Account>(ex.ToString(), 500);
             }
         }
-
+​
         /// <summary>Add salt and encrypt the password</summary>
-        /// <param name="account">The account with the password</param>
+        /// <param name="password">The account with the password</param>
         /// <returns>A new account with a password encrypted</returns>
-        private Account EncryptPassword(Account account)
+        private (byte[], string) EncryptPassword(string password)
         {
-            using (HMACSHA512 hmac = new HMACSHA512())
-            {
-                account.Salt = hmac.Key;
-            }
-            byte[] password = Encoding.UTF8.GetBytes(account.Password + account.Salt);
+            HMACSHA512 hmac = new HMACSHA512();
+            byte[] salt = hmac.Key;
+            hmac.Dispose();
+            byte[] _password = Encoding.UTF8.GetBytes(password + salt);
             int key = int.Parse(Environment.GetEnvironmentVariable("SDES_KEY"));
             List<byte> hashedPassword = new List<byte>();
-            foreach (byte _byte in password)
+            foreach (byte _byte in _password)
             {
                 hashedPassword.Add(new SDES().Encrypt(_byte, key));
             }
-            account.Password = Encoding.UTF8.GetString(hashedPassword.ToArray());
-            return account;
+            return (salt, Encoding.UTF8.GetString(hashedPassword.ToArray()));
         }
     }
 }
