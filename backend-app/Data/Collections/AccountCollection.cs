@@ -23,7 +23,7 @@ namespace backend_app.Data.Collections
 
         /// <summary>Get all items in the account collection</summary>
         /// <returns>A list with each collection</returns>
-        public async Task<List<Account>> Get()
+        public async Task<List<Account>> GetAll()
         {
             IAsyncCursor<Account> task = await _account.FindAsync(a => true);
             List<Account> list = await task.ToListAsync();
@@ -33,9 +33,20 @@ namespace backend_app.Data.Collections
         /// <summary>Get all the data for an specific account</summary>
         /// <param name="id">The id of the account</param>
         /// <returns>The data for the specific account</returns>
-        public async Task<Account> Get(string id)
+        public async Task<Account> GetById(string id)
         {
             IAsyncCursor<Account> task = await _account.FindAsync(a => a.Id.Equals(id));
+            List<Account> list = await task.ToListAsync();
+            Account result = list.FirstOrDefault();
+            return result;
+        }
+
+        /// <summary>Get all the data for an specific account</summary>
+        /// <param name="username">The username of the account</param>
+        /// <returns>The data for the specific account</returns>
+        public async Task<Account> GetByUsername(string username)
+        {
+            IAsyncCursor<Account> task = await _account.FindAsync(a => a.Username.Equals(username));
             List<Account> list = await task.ToListAsync();
             Account result = list.FirstOrDefault();
             return result;

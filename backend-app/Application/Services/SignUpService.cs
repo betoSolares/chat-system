@@ -17,11 +17,14 @@ namespace backend_app.Application.Services
             _accountCollection = accountCollection;
         }
 
+        /// <summary>Try to create a new account</summary>
+        /// <param name="account">The account to add</param>
+        /// <returns>A succesful response if it's created, otherwise failed response</returns>
         public async Task<Response<Account>> RegisterAccount(Account account)
         {
             try
             {
-                if (_accountCollection.Get(account.Id) == null)
+                if (_accountCollection.GetByUsername(account.Username) == null)
                 {
                     Account newAccount = await _accountCollection.Create(account);
                     return new Response<Account>(newAccount);
