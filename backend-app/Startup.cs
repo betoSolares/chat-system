@@ -1,6 +1,9 @@
-﻿using backend_app.Data.Collections;
+﻿using AutoMapper;
+using backend_app.Application.Services;
+using backend_app.Data.Collections;
 using backend_app.Data.Contexts;
 using backend_app.Domain.Contexts;
+using backend_app.Domain.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +33,12 @@ namespace backend_app
 
             // Account collection
             services.AddSingleton<AccountCollection>();
+
+            // Signup service
+            services.AddScoped<ISignUpService, SignUpService>();
+
+            // Automapper service
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

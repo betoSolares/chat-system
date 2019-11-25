@@ -1,11 +1,14 @@
-﻿using backend_app.Domain.Contexts;
+﻿using backend_app.Domain.Collections;
+using backend_app.Domain.Contexts;
 using backend_app.Domain.Models;
 using MongoDB.Driver;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace backend_app.Data.Collections
 {
-    public class AccountCollection
+    public class AccountCollection : IAccountCollection
     {
         private readonly IMongoCollection<Account> _account;
 
@@ -20,19 +23,30 @@ namespace backend_app.Data.Collections
 
         /// <summary>Get all items in the account collection</summary>
         /// <returns>A list with each collection</returns>
-        public List<Account> Get() => _account.Find(a => true).ToList();
+        public async Task<List<Account>> Get()
+        {
+            IAsyncCursor<Account> task = await _account.FindAsync(a => true);
+            List<Account> list = await task.ToListAsync();
+            return list;
+        }
 
         /// <summary>Get all the data for an specific account</summary>
         /// <param name="id">The id of the account</param>
         /// <returns>The data for the specific account</returns>
-        public Account Get(string id) => _account.Find(a => a.Id.Equals(id)).FirstOrDefault();
+        public async Task<Account> Get(string id)
+        {
+            IAsyncCursor<Account> task = await _account.FindAsync(a => a.Id.Equals(id));
+            List<Account> list = await task.ToListAsync();
+            Account result = list.FirstOrDefault();
+            return result;
+        }
 
         /// <summary>Add a new account in the collection</summary>
         /// <param name="account">The account to add</param>
         /// <returns>The account that was added</returns>
-        public Account Create(Account account)
+        public async Task<Account> Create(Account account)
         {
-            _account.InsertOne(account);
+            await _account.InsertOneAsync(account);
             return account;
         }
 
@@ -40,14 +54,14 @@ namespace backend_app.Data.Collections
         /// <param name="id">The id of the account</param>
         /// <param name="account">The new information for the account</param>
         /// <returns>The new data for the account</returns>
-        public Account Update(string id, Account account)
+        public async Task<Account> Update(string id, Account account)
         {
-            _account.ReplaceOne(a => a.Id.Equals(id), account);
+            await _account.ReplaceOneAsync(a => a.Id.Equals(id), account);
             return account;
         }
 
         /// <summary>Remove one account from the collection</summary>
         /// <param name="id">The id of the account to delete</param>
-        public void Delete(string id) => _account.DeleteOne(a => a.Id.Equals(id));
+        public async Task Delete(string id) => await _account.DeleteOneAsync(a => a.Id.Equals(id));
     }
 }
