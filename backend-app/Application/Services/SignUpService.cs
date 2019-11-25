@@ -29,12 +29,12 @@ namespace backend_app.Application.Services
                 }
                 else
                 {
-                    return new SignUpResponse("Conflict");
+                    return new SignUpResponse("The account alredy exists", 409);
                 }
             }
             catch (Exception ex)
             {
-                return new SignUpResponse(ex.ToString());
+                return new SignUpResponse(ex.ToString(), 500);
             }
         }
     }
