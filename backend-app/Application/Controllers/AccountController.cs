@@ -2,7 +2,6 @@
 using backend_app.Application.Resources;
 using backend_app.Domain.Models;
 using backend_app.Domain.Services;
-using backend_app.Domain.Services.Communication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -29,7 +28,7 @@ namespace backend_app.Application.Controllers
             if (ModelState.IsValid)
             {
                 Account account = _mapper.Map<SignUpResource, Account>(signUpResource);
-                SignUpResponse response = await _signupService.RegisterAccount(account);
+                Response<Account> response = await _signupService.RegisterAccount(account);
                 if (response.Succes)
                 {
                     return Ok("Success");
