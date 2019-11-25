@@ -16,9 +16,10 @@ namespace backend_app.Application.Controllers
         private readonly IMapper _mapper;
         private readonly ISignUpService _signupService;
 
-        public AccountController(IMapper mapper)
+        public AccountController(IMapper mapper, ISignUpService signUpService)
         {
             _mapper = mapper;
+            _signupService = signUpService;
         }
 
         [ActionName("signup")]

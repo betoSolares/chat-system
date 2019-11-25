@@ -2,6 +2,7 @@
 using backend_app.Application.Services;
 using backend_app.Data.Collections;
 using backend_app.Data.Contexts;
+using backend_app.Domain.Collections;
 using backend_app.Domain.Contexts;
 using backend_app.Domain.Services;
 using Microsoft.AspNetCore.Builder;
@@ -32,7 +33,7 @@ namespace backend_app
             services.AddSingleton<IDatabaseContext>(sp => sp.GetRequiredService<IOptions<DatabaseContext>>().Value);
 
             // Account collection
-            services.AddSingleton<AccountCollection>();
+            services.AddScoped<IAccountCollection, AccountCollection>();
 
             // Signup service
             services.AddScoped<ISignUpService, SignUpService>();
