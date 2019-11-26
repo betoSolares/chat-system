@@ -116,6 +116,12 @@
                     </div>
                 </div>
             </form>
+            <input type="hidden" id="state" value="@ViewBag.Message" />
+            <input type="hidden" id="error" value="@ViewBag.Error" /><br />
+            <div id="alertBox" class="alertBox" style="display: none">
+                <span class="closebtn" id="closebtn">&times;</span>
+                <p id="message"></p>
+            </div>
         </div>
     </div>
 </section>
