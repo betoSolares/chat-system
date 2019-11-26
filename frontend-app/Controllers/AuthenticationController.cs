@@ -16,7 +16,7 @@ namespace frontend_app.Controllers
         {
             return View();
         }
-        
+
         // Try to create a new account
         [HttpPost]
         public ActionResult SignUp(string name, string lastname, string email, string username, string password)
@@ -36,7 +36,7 @@ namespace frontend_app.Controllers
             Task<HttpResponseMessage> response = client.PostAsJsonAsync("account/signup", signUp);
             response.Wait();
             client.Dispose();
-            
+
             HttpResponseMessage result = response.Result;
             Task<string> readTask = result.Content.ReadAsStringAsync();
             readTask.Wait();
@@ -54,25 +54,73 @@ namespace frontend_app.Controllers
                 {
                     var definition = new { error = "" };
                     string error = JsonConvert.DeserializeAnonymousType(readTask.Result, definition).error;
-                    ViewBag.Message = "Conflict";
+                    ViewBag.Message = "ERROR";
                     ViewBag.Error = error;
                     return View();
                 }
                 else
                 {
-                    ViewBag.Message = "Internal Error";
+                    ViewBag.Message = "ERROR";
                     ViewBag.Error = "An error ocurred, try later.";
                     return View();
                 }
             }
         }
-        
+
         // Log In form
         // GET: /LogIn, /Authentication/LogIn
         [HttpGet]
         public ActionResult LogIn()
         {
             return View();
+        }
+        
+        // Try to access to the chat
+        [HttpPost]
+        public ActionResult LogIn(string username, string password)
+        {
+            LogIn logIn = new LogIn()
+            {
+                Username = username,
+                Password = password
+            };
+            HttpClient client = new HttpClient
+            {
+                BaseAddress = new Client().URI
+            };
+            
+            Task<HttpResponseMessage> response = client.PostAsJsonAsync("account/login", logIn);
+            response.Wait();
+            client.Dispose();
+            
+            HttpResponseMessage result = response.Result;
+            Task<string> readTask = result.Content.ReadAsStringAsync();
+            readTask.Wait();
+            if (result.IsSuccessStatusCode)
+            {
+                var definition = new { token = "" };
+                string token = JsonConvert.DeserializeAnonymousType(readTask.Result, definition).token;
+                Session["username"] = username;
+                Session["token"] = token;
+                return RedirectToAction("Inbox", "Messages");
+            }
+            else
+            {
+                if (result.StatusCode == HttpStatusCode.NotFound)
+                {
+                    var definition = new { error = "" };
+                    string error = JsonConvert.DeserializeAnonymousType(readTask.Result, definition).error;
+                    ViewBag.Message = "ERROR";
+                    ViewBag.Error = error;
+                    return View();
+                }
+                else
+                {
+                    ViewBag.Message = "ERROR";
+                    ViewBag.Error = "An error ocurred, try later.";
+                    return View();
+                }
+            }
         }
     }
 }
