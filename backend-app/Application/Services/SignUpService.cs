@@ -7,18 +7,22 @@ using backend_app.Domain.Collections;
 using backend_app.Domain.Models;
 using backend_app.Domain.Services;
 using external_process.Encryption;
+using Microsoft.Extensions.Configuration;
 ​
 namespace backend_app.Application.Services
 {
     public class SignUpService : ISignUpService
     {
         private readonly IAccountCollection _accountCollection;
+        private readonly IConfiguration _configuration;
 ​
         /// <summary>Constructor</summary>
         /// <param name="accountCollection">The account collection</param>
-        public SignUpService(IAccountCollection accountCollection)
+        /// <param name="configuration">The configuration of the application</param>
+        public SignUpService(IAccountCollection accountCollection, IConfiguration configuration)
         {
             _accountCollection = accountCollection;
+            _configuration = configuration;
         }
 ​
         /// <summary>Try to create a new account</summary>
@@ -57,7 +61,7 @@ namespace backend_app.Application.Services
             byte[] salt = hmac.Key;
             hmac.Dispose();
             byte[] _password = Encoding.UTF8.GetBytes(password + salt);
-            int key = int.Parse(Environment.GetEnvironmentVariable("SDES_KEY"));
+            int key = int.Parse(_configuration["SDES_KEY"]);
             List<byte> hashedPassword = new List<byte>();
             foreach (byte _byte in _password)
             {
