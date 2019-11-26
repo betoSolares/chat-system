@@ -1,0 +1,39 @@
+﻿.notification {
+    background-color: whitesmoke;
+    border-radius: 4px;
+    padding: 1.25rem 2.5rem 1.25rem 1.5rem;
+    position: relative;
+}
+
+​
+.failed {
+    background-color: #f44336;
+    color: white;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+
+​
+.success {
+    background-color: #00c851;
+    color: white;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+
+​
+.closebtn {
+    color: white;
+    cursor: pointer;
+    float: right;
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 20px;
+    margin-left: 15px;
+    transition: 03s;
+}
+
+    ​
+    .closebtn:hover {
+        color: black;
+    }

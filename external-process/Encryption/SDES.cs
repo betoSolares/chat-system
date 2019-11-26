@@ -11,7 +11,7 @@ namespace external_process.Encryption
         /// <param name="encryptedByte">The byte to decrypt</param>
         /// <param name="key">The key for the decryption</param>
         /// <returns>True and the decrypted byte or false and a default byte</returns>
-        public (bool, byte) Decrypt(byte encryptedByte, int key)
+        public byte Decrypt(byte encryptedByte, int key)
         {
             if (permutations.CheckPermutations())
             {
@@ -19,16 +19,16 @@ namespace external_process.Encryption
                 (string K1, string K2) = GenerateKeys(binaryKey, permutations.P10, permutations.P8);
                 byte newByte = DecryptBytes(encryptedByte, K1, K2, permutations.IP, permutations.EP, permutations.P4,
                                             permutations.IIP);
-                return (true, newByte);
+                return newByte;
             }
-            return (false, default);
+            return default;
         }
 
         /// <summary>Encrypt a byte using the S-DES algorithm</summary>
         /// <param name="normalByte">The byte to encrypt</param>
         /// <param name="key">The key for the encryption</param>
         /// <returns>True and the encrypted byte or false and a default byte</returns>
-        public (bool, byte) Encrypt(byte normalByte, int key)
+        public byte Encrypt(byte normalByte, int key)
         {
             if (permutations.CheckPermutations())
             {
@@ -36,9 +36,9 @@ namespace external_process.Encryption
                 (string K1, string K2) = GenerateKeys(binaryKey, permutations.P10, permutations.P8);
                 byte encryptedByte = EncryptBytes(normalByte, K1, K2, permutations.IP, permutations.EP, permutations.P4,
                                                   permutations.IIP);
-                return (true, encryptedByte);
+                return encryptedByte;
             }
-            return (false, default);
+            return default;
         }
 
         /// <summary>Decrypt a byte</summary>

@@ -8,8 +8,13 @@ namespace frontend_app
         {
             // CSS
             bundles.Add(new StyleBundle("~/bundles/style").Include(
-                        "~/Styles/authentication.css"));
+                        "~/Styles/authentication.css",
+                        "~/Styles/alerts.css"));
+            
             // JS
+            bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
+                       "~/Scripts/jquery-3.4.1.min.js",
+                       "~/Scripts/alerts.js"));
         }
     }
 }
