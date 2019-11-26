@@ -11,7 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-
+​
 namespace backend_app.Application.Controllers
 {
     [Route("api/[controller]/[action]")]
@@ -19,16 +19,20 @@ namespace backend_app.Application.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private readonly ILogInService _logInService;
         private readonly IMapper _mapper;
         private readonly ISignUpService _signupService;
-        
-        public AccountController(IConfiguration configuration, IMapper mapper, ISignUpService signUpService)
+​
+        public AccountController(IConfiguration configuration, ILogInService logInService, IMapper mapper,
+                                 ISignUpService signUpService)
         {
             _configuration = configuration;
+            _logInService = logInService;
             _mapper = mapper;
             _signupService = signUpService;
         }
-        
+​
+        // Create a new account
         [ActionName("signup")]
         [HttpPost]
         public async Task<IActionResult> SignUp(SignUpResource signUpResource)
@@ -52,7 +56,32 @@ namespace backend_app.Application.Controllers
             }
             return BadRequest(ModelState);
         }
-        
+​
+        // Access to the data of your account
+        [ActionName("login")]
+        [HttpPost]
+        public async Task<IActionResult> LogIn(LogInResource logInResource)
+        {
+            if (ModelState.IsValid)
+            {
+                Account account = _mapper.Map<LogInResource, Account>(logInResource);
+                Response<Account> response = await _logInService.LogIn(account);
+                if (response.Succes)
+                {
+                    string token = BuildToken(response.Resource);
+                    return Ok(new { token });
+                }
+                else
+                {
+                    if (response.StatusCode == 404)
+                        return NotFound(new { error = response.Message });
+                    else
+                        return StatusCode(StatusCodes.Status500InternalServerError, new { error = response.Message });
+                }
+            }
+            return BadRequest(ModelState);
+        }
+
         /// <summary>Create a new token</summary>
         /// <param name="account">The data for the token</param>
         /// <returns>The new token</returns>
