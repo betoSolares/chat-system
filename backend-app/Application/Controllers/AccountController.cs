@@ -11,7 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-​
+
 namespace backend_app.Application.Controllers
 {
     [Route("api/[controller]/[action]")]
@@ -22,7 +22,7 @@ namespace backend_app.Application.Controllers
         private readonly ILogInService _logInService;
         private readonly IMapper _mapper;
         private readonly ISignUpService _signupService;
-​
+        
         public AccountController(IConfiguration configuration, ILogInService logInService, IMapper mapper,
                                  ISignUpService signUpService)
         {
@@ -31,7 +31,7 @@ namespace backend_app.Application.Controllers
             _mapper = mapper;
             _signupService = signUpService;
         }
-​
+        
         // Create a new account
         [ActionName("signup")]
         [HttpPost]
@@ -56,7 +56,7 @@ namespace backend_app.Application.Controllers
             }
             return BadRequest(ModelState);
         }
-​
+        
         // Access to the data of your account
         [ActionName("login")]
         [HttpPost]

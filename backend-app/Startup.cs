@@ -20,28 +20,29 @@ namespace backend_app
         {
             Configuration = configuration;
         }
-
+        
         public IConfiguration Configuration { get; }
-
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            
             // Database Context
             services.Configure<DatabaseContext>(Configuration.GetSection(nameof(DatabaseContext)));
             services.AddSingleton<IDatabaseContext>(sp => sp.GetRequiredService<IOptions<DatabaseContext>>().Value);
-
+            
             // Account collection
             services.AddScoped<IAccountCollection, AccountCollection>();
-
-            // Signup service
+            
+            // Services
             services.AddScoped<ISignUpService, SignUpService>();
-
+            services.AddScoped<ILogInService, LogInService>();
+            
             // Automapper service
             services.AddAutoMapper(typeof(Startup));
         }
-
+        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -53,7 +54,7 @@ namespace backend_app
             {
                 app.UseHsts();
             }
-
+            
             app.UseHttpsRedirection();
             app.UseMvc();
         }
