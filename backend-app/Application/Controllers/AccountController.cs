@@ -11,7 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-​
+
 namespace backend_app.Application.Controllers
 {
     [Route("api/[controller]/[action]")]
@@ -21,14 +21,14 @@ namespace backend_app.Application.Controllers
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
         private readonly ISignUpService _signupService;
-​
+        
         public AccountController(IConfiguration configuration, IMapper mapper, ISignUpService signUpService)
         {
             _configuration = configuration;
             _mapper = mapper;
             _signupService = signUpService;
         }
-​
+        
         [ActionName("signup")]
         [HttpPost]
         public async Task<IActionResult> SignUp(SignUpResource signUpResource)
@@ -52,7 +52,7 @@ namespace backend_app.Application.Controllers
             }
             return BadRequest(ModelState);
         }
-​
+        
         /// <summary>Create a new token</summary>
         /// <param name="account">The data for the token</param>
         /// <returns>The new token</returns>

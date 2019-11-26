@@ -8,14 +8,14 @@ using backend_app.Domain.Models;
 using backend_app.Domain.Services;
 using external_process.Encryption;
 using Microsoft.Extensions.Configuration;
-​
+
 namespace backend_app.Application.Services
 {
     public class SignUpService : ISignUpService
     {
         private readonly IAccountCollection _accountCollection;
         private readonly IConfiguration _configuration;
-​
+        
         /// <summary>Constructor</summary>
         /// <param name="accountCollection">The account collection</param>
         /// <param name="configuration">The configuration of the application</param>
@@ -24,7 +24,7 @@ namespace backend_app.Application.Services
             _accountCollection = accountCollection;
             _configuration = configuration;
         }
-​
+        
         /// <summary>Try to create a new account</summary>
         /// <param name="account">The account to add</param>
         /// <returns>A succesful response if it's created, otherwise failed response</returns>
@@ -52,7 +52,7 @@ namespace backend_app.Application.Services
                 return new Response<Account>(ex.ToString(), 500);
             }
         }
-​
+        
         /// <summary>Add salt and encrypt the password</summary>
         /// <param name="password">The account with the password</param>
         /// <returns>A new account with a password encrypted</returns>
