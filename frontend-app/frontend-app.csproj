@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Styles\alerts.css" />
     <Content Include="Styles\authentication.css" />
     <Content Include="Web.config" />
   </ItemGroup>
