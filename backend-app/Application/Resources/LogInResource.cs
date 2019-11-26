@@ -1,11 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace backend-app.Application.Resources
+﻿using System.ComponentModel.DataAnnotations;
+​
+namespace backend_app.Application.Resources
 {
     public class LogInResource
-{
-}
+    {
+        [Required]
+        [MaxLength(20)]
+        public string Username { get; set; }
+​
+        [Required]
+        public string Password { get; set; }
+    }
 }
