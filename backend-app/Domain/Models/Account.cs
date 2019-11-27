@@ -26,8 +26,5 @@ namespace backend_app.Domain.Models
 
         [BsonElement("password")]
         public string Password { get; set; }
-
-        [BsonElement("online")]
-        public bool IsOnline { get; set; }
     }
 }

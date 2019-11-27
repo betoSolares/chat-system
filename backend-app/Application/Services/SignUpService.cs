@@ -38,7 +38,6 @@ namespace backend_app.Application.Services
                     Account newAccount = account;
                     newAccount.Password = password;
                     newAccount.Salt = salt;
-                    newAccount.IsOnline = true;
                     await _accountCollection.Create(newAccount);
                     return new Response<Account>(newAccount);
                 }
