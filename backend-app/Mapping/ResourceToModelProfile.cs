@@ -9,6 +9,7 @@ namespace backend_app.Mapping
         public ResourceToModelProfile()
         {
             CreateMap<SignUpResource, Account>();
+            CreateMap<LogInResource, Account>();
         }
     }
 }

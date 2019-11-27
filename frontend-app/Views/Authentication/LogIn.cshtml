@@ -2,78 +2,84 @@
     ViewBag.Title = "Log In";
     Layout = "~/Views/Shared/Authentication.cshtml";
 }
-    <section class="hero is-fullheight">
-        <div class="columns authentication-container">
-            <div class="column is-6 authentication-form-container">
-                <form action="/LogIn" method="post" style="padding-top: 25%">
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <div class="field">
-                                <label class="label has-text-white">Nombre de usuario</label>
-                            </div>
+<section class="hero is-fullheight">
+    <div class="columns authentication-container">
+        <div class="column is-6 authentication-form-container">
+            <form action="/LogIn" method="post" style="padding-top: 25%">
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <div class="field">
+                            <label class="label has-text-white">Nombre de usuario</label>
                         </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control">
-                                    <input class="input is-rounded authentication-input" type="text" name="username" required>
-                                </div>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <input class="input is-rounded authentication-input" type="text" name="username" required maxlength="20">
                             </div>
                         </div>
                     </div>
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <div class="field">
-                                <label class="label has-text-white">Contraseña</label>
-                            </div>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control">
-                                    <input class="input is-rounded authentication-input" type="password" name="password" required>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field is-horizontal">
-                        <div class="field-label"></div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control">
-                                    <button class="button is-rounded authentication-button has-text-white is-centered" type="submit">Ingresar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="column is-6 authentication-welcome">
-                <h1 class="title has-text-centered has-text-white" style="padding-top: 15%">Gracias Por Volver</h1>
-                <div class="content is-size-4 has-text-white" style="padding-top: 5%">
-                    <ul>
-                        <li>
-                            <p>
-                                <span class="icon"><i class="far fa-comments"></i></span>
-                                Únete a la conversación.
-                            </p>
-                        </li>
-                        <li>
-                            <p>
-                                <span class="icon"><i class="far fa-file-alt"></i></span>
-                                Envía tus archivos favoritos.
-                            </p>
-                        </li>
-                        <li>
-                            <p>
-                                <span class="icon"><i class="fas fa-globe-americas"></i></span>
-                                Conectate con gente de todas partes del mundo.
-                            </p>
-                        </li>
-                    </ul>
                 </div>
-                <div class="container has-text-centered">
-                    <p class="is-size-5">¿Aún no tienes cuenta?</p>
-                    <a href="/SignUp" class="button authentication-button has-text-white is-rounded">Registrate</a>
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <div class="field">
+                            <label class="label has-text-white">Contraseña</label>
+                        </div>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <input class="input is-rounded authentication-input" type="password" name="password" required>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div class="field is-horizontal">
+                    <div class="field-label"></div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <button class="button is-rounded authentication-button has-text-white is-centered" type="submit">Ingresar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <input type="hidden" id="state" value="@ViewBag.Message" />
+            <input type="hidden" id="error" value="@ViewBag.Error" /><br />
+            <div id="alertBox" class="alertBox" style="display: none">
+                <span class="closebtn" id="closebtn">&times;</span>
+                <p id="message"></p>
             </div>
         </div>
-    </section>
+        <div class="column is-6 authentication-welcome">
+            <h1 class="title has-text-centered has-text-white" style="padding-top: 15%">Gracias Por Volver</h1>
+            <div class="content is-size-4 has-text-white" style="padding-top: 5%">
+                <ul>
+                    <li>
+                        <p>
+                            <span class="icon"><i class="far fa-comments"></i></span>
+                            Únete a la conversación.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <span class="icon"><i class="far fa-file-alt"></i></span>
+                            Envía tus archivos favoritos.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <span class="icon"><i class="fas fa-globe-americas"></i></span>
+                            Conectate con gente de todas partes del mundo.
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div class="container has-text-centered">
+                <p class="is-size-5">¿Aún no tienes cuenta?</p>
+                <a href="/SignUp" class="button authentication-button has-text-white is-rounded">Registrate</a>
+            </div>
+        </div>
+    </div>
+</section>
