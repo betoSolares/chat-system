@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "MyContacts";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+<center>
+    <h2 class="title is-2 has-text-white">Mis Contactos</h2>
+</center>
+@if (ViewBag.ERROR.Equals("YES"))
+{
+    <div id="no-item" class="hero is-medium is-bold">
+        <div class="hero-body has-text-centered">
+            <div class="section ">
+                <div class="title has-text-white">
+                    <span class="icon has-text-white">
+                        <i class="fas fa-users fa-7x"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="container has-text-white">
+                <div class="subtitle ">
+                    <p class="has-text-white">Aun no tienes contactos para chatear</p><br />
+                    <a class="button my-button2 has-text-white" href="/Contacts/Find">
+                        <strong>Agregar Contactos</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <center>
+        <table class="table" style="margin-top: 10px">
+            <tbody>
+                @foreach (var contact in ViewBag.Contacts)
+                {
+                    <tr>
+                        <td>@contact.Username</td>
+                        <td>@contact.GivenName</td>
+                        <td>@contact.FamilyName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </center>
+}
