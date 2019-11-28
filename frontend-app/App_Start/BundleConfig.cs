@@ -9,12 +9,15 @@ namespace frontend_app
             // CSS
             bundles.Add(new StyleBundle("~/bundles/style").Include(
                         "~/Styles/authentication.css",
-                        "~/Styles/alerts.css"));
-            
+                        "~/Styles/alerts.css",
+                        "~/Styles/menu.css",
+                        "~/Styles/shared.css"));
+
             // JS
             bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
                        "~/Scripts/jquery-3.4.1.min.js",
-                       "~/Scripts/alerts.js"));
+                       "~/Scripts/alerts.js",
+                       "~/Scripts/menu.js"));
         }
     }
 }
