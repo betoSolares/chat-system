@@ -1,11 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using backend_app.Application.Resources;
+using backend_app.Domain.Models;
 
-namespace backend-app.Mapping
+namespace backend_app.Mapping
 {
-    public class ModelToResourceProfile
-{
-}
+    public class ModelToResourceProfile : Profile
+    {
+        public ModelToResourceProfile()
+        {
+            CreateMap<Account, ContactResource>();
+        }
+    }
 }
