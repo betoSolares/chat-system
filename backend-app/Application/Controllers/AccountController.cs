@@ -22,7 +22,7 @@ namespace backend_app.Application.Controllers
         private readonly ILogInService _logInService;
         private readonly IMapper _mapper;
         private readonly ISignUpService _signupService;
-        
+
         public AccountController(IConfiguration configuration, ILogInService logInService, IMapper mapper,
                                  ISignUpService signUpService)
         {
@@ -31,7 +31,7 @@ namespace backend_app.Application.Controllers
             _mapper = mapper;
             _signupService = signUpService;
         }
-        
+
         // Create a new account
         [ActionName("signup")]
         [HttpPost]
@@ -56,7 +56,7 @@ namespace backend_app.Application.Controllers
             }
             return BadRequest(ModelState);
         }
-        
+
         // Access to the data of your account
         [ActionName("login")]
         [HttpPost]
@@ -81,28 +81,32 @@ namespace backend_app.Application.Controllers
             }
             return BadRequest(ModelState);
         }
-
+        
         /// <summary>Create a new token</summary>
         /// <param name="account">The data for the token</param>
         /// <returns>The new token</returns>
         private string BuildToken(Account account)
         {
-            Claim[] claims = new Claim[]
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+            ClaimsIdentity identity = new ClaimsIdentity(new Claim[]
             {
                 new Claim(JwtRegisteredClaimNames.GivenName, account.GivenName),
                 new Claim(JwtRegisteredClaimNames.FamilyName, account.FamilyName),
                 new Claim(JwtRegisteredClaimNames.Email, account.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString())
-            };
-            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT_KEY"]));
+            });
+            byte[] keyByteArray = Encoding.ASCII.GetBytes(_configuration["JWT_KEY"]);
+            SymmetricSecurityKey key = new SymmetricSecurityKey(keyByteArray);
             SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            JwtSecurityToken token = new JwtSecurityToken(
-                issuer: "chat-system/backend-app",
-                audience: "chat-system/frontend-app",
-                claims: claims,
-                signingCredentials: credentials);
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            SecurityToken token = handler.CreateToken(new SecurityTokenDescriptor
+            {
+                Issuer = "chat-system/backend-app",
+                Audience = "chat-system/frontend-app",
+                SigningCredentials = credentials,
+                Subject = identity
+            });
+            return handler.WriteToken(token);
         }
     }
 }

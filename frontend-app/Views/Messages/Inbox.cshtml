@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Inbox";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+@if (ViewBag.ERROR.Equals("YES"))
+{
+    <div id="no-item" class="hero is-medium is-bold">
+        <div class="hero-body has-text-centered">
+            <div class="section ">
+                <div class="title has-text-white">
+                    <span class="icon has-text-white">
+                        <i class="fas fa-users fa-7x"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="container has-text-white">
+                <div class="subtitle ">
+                    <p class="has-text-white">Aun no tienes contactos para chatear</p><br />
+                    <a class="button my-button2 has-text-white" href="/Contacts/Find">
+                        <strong>Agregar Contactos</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

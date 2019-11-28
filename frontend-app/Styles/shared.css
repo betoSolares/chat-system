@@ -1,0 +1,16 @@
+﻿body {
+    background-color: #212121;
+    min-height: 100vh;
+}
+
+​
+.my-button1 {
+    background-color: #F1B600 !important;
+    border-color: #F1B600 !important;
+}
+
+​
+.my-button2 {
+    background-color: #F76600 !important;
+    border-color: #F76600 !important;
+}

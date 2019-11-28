@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "Requests";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<center>
+    <h2 class="title is-2 has-text-white">Solicitudes</h2>
+</center>
+@if (ViewBag.ERROR.Equals("YES"))
+{
+    <div id="no-item" class="hero is-medium is-bold">
+        <div class="hero-body has-text-centered">
+            <div class="section ">
+                <div class="title has-text-white">
+                    <span class="icon has-text-white">
+                        <i class="fas fa-users fa-7x"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="container has-text-white">
+                <div class="subtitle ">
+                    <p class="has-text-white">No tienes solicitudes por el momento</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <center>
+        <table class="table" style="margin-top: 10px">
+            <tbody>
+                @foreach (var contact in ViewBag.Contacts)
+                {
+                    <tr>
+                        <td>@contact.Username</td>
+                        <td>@contact.GivenName</td>
+                        <td>@contact.FamilyName</td>
+                        <td>
+                            <form method="post" action="/Contacts/AcceptRequest">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" name="username" value="@contact.Username" />
+                                            <input type="submit" class="button my-button1 has-text-white" value="Aceptar" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="post" action="/Contacts/DeleteRequest">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" name="username" value="@contact.Username" />
+                                            <input type="submit" class="button is-danger has-text-white" value="Aceptar" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </center>
+}

@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Find";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+<center>
+    <h2 class="title is-2 has-text-white">Buscar</h2>
+</center>
+<form method="post" action="/Contacts/Find" style="margin-top: 10px">
+    <div class="field is-grouped">
+        <p class="control is-expanded">
+            <input class="input" type="text" placeholder="Nombre de usuario" name="username">
+        </p>
+        <p class="control">
+            <input type="submit" class="button my-button1 has-text-white" value="Buscar" />
+        </p>
+    </div>
+</form>
+@if (ViewBag.Error.Equals("YES"))
+{
+    <div id="no-item" class="hero is-medium is-bold">
+        <div class="hero-body has-text-centered">
+            <div class="section ">
+                <div class="title has-text-white">
+                    <span class="icon has-text-white">
+                        <i class="fas fa-users fa-7x"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="container has-text-white">
+                <div class="subtitle ">
+                    <p class="has-text-white">No hemos encontrado lo que buscabas</p><br />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else if (ViewBag.Contacts != null)
+{
+    <center>
+        <table class="table" style="margin-top: 10px">
+            <tbody>
+                @foreach (var contact in ViewBag.Contacts)
+                {
+                    if (contact.SentRequest)
+                    {
+                        <tr>
+                            <td>
+                                <form method="post" action="/Contacts/RemoveRequest">
+                                    <table>
+                                        <tr>
+                                            <td>@contact.Username</td>
+                                            <td>@contact.GivenName</td>
+                                            <td>@contact.FamilyName</td>
+                                            <td>
+                                                <input type="hidden" name="username" value="@contact.Username" />
+                                                <input type="submit" class="button is-danger has-text-white" value="Cancelar" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>
+                                <form method="post" action="/Contacts/AddRequest">
+                                    <table>
+                                        <tr>
+                                            <td>@contact.Username</td>
+                                            <td>@contact.GivenName</td>
+                                            <td>@contact.FamilyName</td>
+                                            <td>
+                                                <input type="hidden" name="username" value="@contact.Username" />
+                                                <input type="submit" class="button my-button1 has-text-white" value="Agregar" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </center>
+}
