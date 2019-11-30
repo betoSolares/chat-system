@@ -1,10 +1,10 @@
 ﻿using external_process.Encryption;
+using frontend_app.Helpers;
 using frontend_app.Models;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -17,30 +17,15 @@ namespace frontend_app.Controllers
         [HttpGet]
         public ActionResult Inbox()
         {
-            HttpClient client = new HttpClient
-            {
-                BaseAddress = new Client().URI
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Session["token"].ToString());
-            Task<HttpResponseMessage> response = client.GetAsync("contact/mycontacts/" + Session["username"]);
-            response.Wait();
-
-            HttpResponseMessage result = response.Result;
-            Task<string> readTask = result.Content.ReadAsStringAsync();
-            readTask.Wait();
+            (HttpResponseMessage result, Task<string> readTask) = new Requests<int>().Get(Session["token"].ToString(), "contact/mycontacts/" + Session["username"]);
             if (result.IsSuccessStatusCode)
             {
-                Task<HttpResponseMessage> newResponse = client.GetAsync("conversations/conversations/" + Session["username"]);
-                newResponse.Wait();
-                client.Dispose();
+                (HttpResponseMessage newResult, Task<string> newTask) = new Requests<int>().Get(Session["token"].ToString(), "conversations/conversations/" + Session["username"]);
 
                 JObject json = JObject.Parse(readTask.Result);
                 JArray array = (JArray)json["contacts"];
                 List<Contact> contacts = array.ToObject<List<Contact>>();
 
-                HttpResponseMessage newResult = newResponse.Result;
-                Task<string> newTask = newResult.Content.ReadAsStringAsync();
-                newTask.Wait();
                 if (newResult.IsSuccessStatusCode)
                 {
                     json = JObject.Parse(newTask.Result);
@@ -94,17 +79,9 @@ namespace frontend_app.Controllers
                 To = username,
                 Content = EncryptText(content)
             };
-            HttpClient client = new HttpClient
-            {
-                BaseAddress = new Client().URI
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Session["token"].ToString());
-            Task<HttpResponseMessage> response = client.PostAsJsonAsync("conversations/send", message);
-            response.Wait();
-            client.Dispose();
-            HttpResponseMessage result = response.Result;
-            Task<string> readTask = result.Content.ReadAsStringAsync();
-            readTask.Wait();
+            (HttpResponseMessage result, Task<string> readTask) = new Requests<MessageToSent>().Post(Session["token"].ToString(),
+                                                                                                  "conversations/send",
+                                                                                                  message);
             if (result.IsSuccessStatusCode)
             {
                 if (type.Equals("new"))
@@ -140,17 +117,9 @@ namespace frontend_app.Controllers
                 To = username,
                 Content = EncryptText(content)
             };
-            HttpClient client = new HttpClient
-            {
-                BaseAddress = new Client().URI
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Session["token"].ToString());
-            Task<HttpResponseMessage> response = client.PostAsJsonAsync("conversations/delete", message);
-            response.Wait();
-            client.Dispose();
-            HttpResponseMessage result = response.Result;
-            Task<string> readTask = result.Content.ReadAsStringAsync();
-            readTask.Wait();
+            (HttpResponseMessage result, Task<string> readTask) = new Requests<MessageToSent>().Post(Session["token"].ToString(),
+                                                                                                  "conversations/delete",
+                                                                                                  message);
             if (result.IsSuccessStatusCode)
             {
                 return RedirectToAction("GetMessages", new { username });
@@ -182,19 +151,11 @@ namespace frontend_app.Controllers
                 From = Session["username"].ToString(),
                 To = username,
                 Content = EncryptText(content),
-                NewContent = EncryptText(content)
+                NewContent = EncryptText(newContent)
             };
-            HttpClient client = new HttpClient
-            {
-                BaseAddress = new Client().URI
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Session["token"].ToString());
-            Task<HttpResponseMessage> response = client.PutAsJsonAsync("conversations/modify", message);
-            response.Wait();
-            client.Dispose();
-            HttpResponseMessage result = response.Result;
-            Task<string> readTask = result.Content.ReadAsStringAsync();
-            readTask.Wait();
+            (HttpResponseMessage result, Task<string> readTask) = new Requests<MessageToSent>().Put(Session["token"].ToString(),
+                                                                                                  "conversations/modify",
+                                                                                                  message);
             if (result.IsSuccessStatusCode)
             {
                 return RedirectToAction("GetMessages", new { username });
@@ -221,18 +182,7 @@ namespace frontend_app.Controllers
         [HttpGet]
         public ActionResult GetMessages(string username)
         {
-            HttpClient client = new HttpClient
-            {
-                BaseAddress = new Client().URI
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Session["token"].ToString());
-            Task<HttpResponseMessage> response = client.GetAsync("conversations/messages/" + Session["username"].ToString() + "/" + username);
-            response.Wait();
-
-            HttpResponseMessage result = response.Result;
-            Task<string> readTask = result.Content.ReadAsStringAsync();
-            readTask.Wait();
-
+            (HttpResponseMessage result, Task<string> readTask) = new Requests<int>().Get(Session["token"].ToString(), "conversations/messages/" + Session["username"].ToString() + "/" + username);
             if (result.IsSuccessStatusCode)
             {
                 JObject json = JObject.Parse(readTask.Result);
