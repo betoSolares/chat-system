@@ -111,7 +111,7 @@ namespace backend_app.Application.Controllers
         // Remove an existing message
         [ActionName("delete")]
         [Route("api/[controller]/[action]")]
-        [HttpDelete]
+        [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> RemoveMessage(MessageReceiveResource messageReceiveResource)
         {

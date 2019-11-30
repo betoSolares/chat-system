@@ -83,9 +83,11 @@ namespace backend_app.Data.Collections
                 return conversation;
             }
         }
+
         /// <summary>Delete an entire conversation</summary>
         /// <param name="id">The id of the conversation</param>
         public async Task DeleteConversation(string id) => await _conversation.DeleteOneAsync(c => c.Id.Equals(id));
+
         /// <summary>Delete a message from a conversation</summary>
         /// <param name="username">The user that makes the request</param>
         /// <param name="contact">The other member</param>
@@ -146,7 +148,7 @@ namespace backend_app.Data.Collections
             {
                 if (conversation.Messages.Count > 0)
                 {
-                    int index = conversation.Messages.FindIndex(m => m.Content.Equals(newContent));
+                    int index = conversation.Messages.FindIndex(m => m.Content.Equals(content));
                     if (index != -1)
                     {
                         conversation.Messages[index].Content = newContent;
