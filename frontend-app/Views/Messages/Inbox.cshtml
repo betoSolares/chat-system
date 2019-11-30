@@ -2,7 +2,7 @@
     ViewBag.Title = "Inbox";
     Layout = "~/Views/Shared/Layout.cshtml";
 }
-@if (ViewBag.ERROR.Equals("YES"))
+@if (ViewBag.Error.Equals("Contacts"))
 {
     <div id="no-item" class="hero is-medium is-bold">
         <div class="hero-body has-text-centered">
@@ -23,4 +23,45 @@
             </div>
         </div>
     </div>
+}
+else if (ViewBag.Error.Equals("Conversations"))
+{
+    <div id="no-item" class="hero is-medium is-bold">
+        <div class="hero-body has-text-centered">
+            <div class="section ">
+                <div class="title has-text-white">
+                    <span class="icon has-text-white">
+                        <i class="fas fa-users fa-7x"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="container has-text-white">
+                <div class="subtitle ">
+                    <p class="has-text-white">Inicia una conversación</p><br />
+                    <a class="button my-button2 has-text-white" id="CreateNewConversation">
+                        <strong>Iniciar Conversación</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <center>
+        <button id="CreateNewConversation" class="button my-button2 has-text-white">Nueva Conversación</button>
+    </center>
+    <table class="table">
+        <tbody>
+            @foreach (var item in ViewBag.Conversations)
+            {
+                <tr>
+                    <td>@item.Username</td>
+                    <td>@item.GivenName</td>
+                    <td>@item.FamilyName</td>
+                    <td class="button my-button2 has-text-white">@Html.ActionLink("Ver mensajes", "GetMessages", new { username = item.Username })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
