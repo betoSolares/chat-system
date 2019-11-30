@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 namespace backend_app.Application.Controllers
 {
     [ApiController]
@@ -17,14 +16,14 @@ namespace backend_app.Application.Controllers
         private readonly IAccountService _accountService;
         private readonly IContactService _contactService;
         private readonly IMapper _mapper;
-        
+
         public ContactController(IAccountService accountService, IContactService contactService, IMapper mapper)
         {
             _accountService = accountService;
             _contactService = contactService;
             _mapper = mapper;
         }
-        
+
         // Get all of the contacts
         [ActionName("mycontacts")]
         [Route("api/[controller]/[action]/{username}")]
@@ -56,7 +55,7 @@ namespace backend_app.Application.Controllers
             }
             return BadRequest(ModelState);
         }
-        
+
         // Get specific contacts
         [ActionName("specific")]
         [Route("api/[controller]/[action]")]
@@ -80,9 +79,12 @@ namespace backend_app.Application.Controllers
                         contacts.Add(resource);
                     }
                     newResponse = await _contactService.GetContacts(findContactResource.Username);
-                    foreach (string myContact in newResponse.Resource)
+                    if (newResponse.Resource != null && newResponse.Resource.Count != 0)
                     {
-                        contacts.RemoveAll(x => x.Username.Equals(myContact));
+                        foreach (string myContact in newResponse.Resource)
+                        {
+                            contacts.RemoveAll(x => x.Username.Equals(myContact));
+                        }
                     }
                     return Ok(new { contacts });
                 }
@@ -96,7 +98,7 @@ namespace backend_app.Application.Controllers
             }
             return BadRequest(ModelState);
         }
-        
+
         // Add a new sent request
         [ActionName("add")]
         [Route("api/[controller]/[action]")]
@@ -109,7 +111,7 @@ namespace backend_app.Application.Controllers
                 Response<Contact> response = await _contactService.SentRequest(findContactResource.Username, findContactResource.Otheruser);
                 if (response.Succes)
                 {
-                    
+
                     return Ok(new { contact = response.Resource });
                 }
                 else
@@ -122,7 +124,7 @@ namespace backend_app.Application.Controllers
             }
             return BadRequest(ModelState);
         }
-        
+
         // Remove a request that was sent
         [ActionName("remove")]
         [Route("api/[controller]/[action]")]
@@ -135,7 +137,7 @@ namespace backend_app.Application.Controllers
                 Response<Contact> response = await _contactService.DeleteRequest(findContactResource.Username, findContactResource.Otheruser);
                 if (response.Succes)
                 {
-                    
+
                     return Ok(new { contact = response.Resource });
                 }
                 else
@@ -148,7 +150,7 @@ namespace backend_app.Application.Controllers
             }
             return BadRequest(ModelState);
         }
-        
+
         // Get all of my incomig requests
         [ActionName("requests")]
         [Route("api/[controller]/[action]/{username}")]
@@ -180,7 +182,7 @@ namespace backend_app.Application.Controllers
             }
             return BadRequest(ModelState);
         }
-        
+
         // Accept an incoming request
         [ActionName("accept")]
         [Route("api/[controller]/[action]")]
@@ -193,7 +195,7 @@ namespace backend_app.Application.Controllers
                 Response<Contact> response = await _contactService.AcceptRequest(findContactResource.Username, findContactResource.Otheruser);
                 if (response.Succes)
                 {
-                    
+
                     return Ok(new { contact = response.Resource });
                 }
                 else
@@ -206,7 +208,7 @@ namespace backend_app.Application.Controllers
             }
             return BadRequest(ModelState);
         }
-        
+
         // Decline a incoming request
         [ActionName("decline")]
         [Route("api/[controller]/[action]")]
