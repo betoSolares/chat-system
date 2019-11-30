@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using backend_app.Domain.Collections;
 using backend_app.Domain.Models;
 using backend_app.Domain.Services;
-​
+
 namespace backend_app.Application.Services
 {
     public class ContactService : IContactService
