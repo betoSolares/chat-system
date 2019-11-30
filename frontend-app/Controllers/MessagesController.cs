@@ -1,11 +1,14 @@
-﻿using frontend_app.Models;
+﻿using external_process.Encryption;
+using frontend_app.Models;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+
 namespace frontend_app.Controllers
 {
     public class MessagesController : Controller
@@ -89,7 +92,7 @@ namespace frontend_app.Controllers
             {
                 From = Session["username"].ToString(),
                 To = username,
-                Content = content
+                Content = EncryptText(content)
             };
             HttpClient client = new HttpClient
             {
@@ -135,7 +138,7 @@ namespace frontend_app.Controllers
             {
                 From = Session["username"].ToString(),
                 To = username,
-                Content = content
+                Content = EncryptText(content)
             };
             HttpClient client = new HttpClient
             {
@@ -178,8 +181,8 @@ namespace frontend_app.Controllers
             {
                 From = Session["username"].ToString(),
                 To = username,
-                Content = content,
-                NewContent = newContent
+                Content = EncryptText(content),
+                NewContent = EncryptText(content)
             };
             HttpClient client = new HttpClient
             {
@@ -243,7 +246,7 @@ namespace frontend_app.Controllers
                         From = message.From,
                         Path = message.Path,
                         IsFile = message.IsFile,
-                        Content = message.Content
+                        Content = DecryptText(message.Content)
                     };
                     if (message.From.Equals(Session["username"].ToString()))
                         newMessage.IsFromMe = true;
@@ -272,6 +275,30 @@ namespace frontend_app.Controllers
                     return View("~/Views/Shared/Error.cshtml");
                 }
             }
+        }
+
+        private string EncryptText(string text)
+        {
+            SDES sdes = new SDES();
+            byte[] bytes = Encoding.UTF8.GetBytes(text);
+            List<byte> encrypted = new List<byte>();
+            foreach(byte Byte in bytes)
+            {
+                encrypted.Add(sdes.Encrypt(Byte, 898));
+            }
+            return Encoding.UTF8.GetString(encrypted.ToArray());
+        }
+
+        private string DecryptText(string text)
+        {
+            SDES sdes = new SDES();
+            byte[] bytes = Encoding.UTF8.GetBytes(text);
+            List<byte> decrypted = new List<byte>();
+            foreach(byte Byte in bytes)
+            {
+                decrypted.Add(sdes.Decrypt(Byte, 898));
+            }
+            return Encoding.UTF8.GetString(decrypted.ToArray());
         }
     }
 }
