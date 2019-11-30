@@ -39,12 +39,14 @@ namespace backend_app
             // Account collection
             services.AddScoped<IAccountCollection, AccountCollection>();
             services.AddScoped<IContactCollection, ContactCollection>();
+            services.AddScoped<IConversationCollection, ConversationCollection>();
 
             // Services
             services.AddScoped<ISignUpService, SignUpService>();
             services.AddScoped<ILogInService, LogInService>();
             services.AddScoped<IContactService, ContactService>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IConversationService, ConversationService>();
 
             // Automapper service
             services.AddAutoMapper(typeof(Startup));
