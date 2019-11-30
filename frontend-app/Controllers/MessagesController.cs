@@ -96,7 +96,6 @@ namespace frontend_app.Controllers
             readTask.Wait();
             if (result.IsSuccessStatusCode)
             {
-                ChatHub.BroadcastData();
                 return RedirectToAction("Inbox");
             }
             else
@@ -139,7 +138,6 @@ namespace frontend_app.Controllers
             readTask.Wait();
             if (result.IsSuccessStatusCode)
             {
-                ChatHub.BroadcastData();
                 return RedirectToAction("Inbox");
             }
             else
@@ -183,7 +181,6 @@ namespace frontend_app.Controllers
             readTask.Wait();
             if (result.IsSuccessStatusCode)
             {
-                ChatHub.BroadcastData();
                 return RedirectToAction("Inbox");
             }
             else
