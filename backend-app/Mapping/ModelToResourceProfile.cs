@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using backend_app.Application.Resources;
 using backend_app.Domain.Models;
-
 namespace backend_app.Mapping
 {
     public class ModelToResourceProfile : Profile
@@ -9,6 +8,8 @@ namespace backend_app.Mapping
         public ModelToResourceProfile()
         {
             CreateMap<Account, ContactResource>();
+            CreateMap<Account, ConversationResource>();
+            CreateMap<Message, MessageResource>();
         }
     }
 }
