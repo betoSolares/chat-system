@@ -125,6 +125,7 @@
     </Compile>
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Contact.cs" />
+    <Compile Include="Models\Conversation.cs" />
     <Compile Include="Models\FindContact.cs" />
     <Compile Include="Models\LogIn.cs" />
     <Compile Include="Models\SignUp.cs" />
