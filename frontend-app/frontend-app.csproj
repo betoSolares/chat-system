@@ -106,11 +106,14 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Scripts\alerts.js" />
+    <Content Include="Scripts\conversation.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\menu.js" />
     <Content Include="Styles\alerts.css" />
     <Content Include="Styles\authentication.css" />
+    <Content Include="Styles\chat.css" />
     <Content Include="Styles\menu.css" />
+    <Content Include="Styles\modal-box.css" />
     <Content Include="Styles\shared.css" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -128,6 +131,8 @@
     <Compile Include="Models\Conversation.cs" />
     <Compile Include="Models\FindContact.cs" />
     <Compile Include="Models\LogIn.cs" />
+    <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\MessageReceive.cs" />
     <Compile Include="Models\MessageToSent.cs" />
     <Compile Include="Models\SignUp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -145,6 +150,7 @@
     <Content Include="Views\Contacts\MyContacts.cshtml" />
     <Content Include="Views\Contacts\Requests.cshtml" />
     <Content Include="Views\Messages\Inbox.cshtml" />
+    <Content Include="Views\Messages\GetMessages.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

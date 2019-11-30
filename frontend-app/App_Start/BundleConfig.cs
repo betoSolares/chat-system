@@ -11,13 +11,15 @@ namespace frontend_app
                         "~/Styles/authentication.css",
                         "~/Styles/alerts.css",
                         "~/Styles/menu.css",
-                        "~/Styles/shared.css"));
+                        "~/Styles/shared.css",
+                        "~/Styles/modal-box.css"));
 
             // JS
             bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
                        "~/Scripts/jquery-3.4.1.min.js",
                        "~/Scripts/alerts.js",
-                       "~/Scripts/menu.js"));
+                       "~/Scripts/menu.js",
+                       "~/Scripts/conversation.js"));
         }
     }
 }
