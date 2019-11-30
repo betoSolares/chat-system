@@ -128,6 +128,7 @@
     <Compile Include="Models\Conversation.cs" />
     <Compile Include="Models\FindContact.cs" />
     <Compile Include="Models\LogIn.cs" />
+    <Compile Include="Models\MessageToSent.cs" />
     <Compile Include="Models\SignUp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
