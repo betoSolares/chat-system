@@ -14,6 +14,8 @@ namespace frontend_app.Controllers
         [HttpGet]
         public ActionResult SignUp()
         {
+            if (Session["username"] != null)
+                return RedirectToAction("Inbox", "Messages");
             return View();
         }
 
@@ -72,6 +74,8 @@ namespace frontend_app.Controllers
         [HttpGet]
         public ActionResult LogIn()
         {
+            if (Session["username"] != null)
+                return RedirectToAction("Inbox", "Messages");
             return View();
         }
         
@@ -121,6 +125,13 @@ namespace frontend_app.Controllers
                     return View();
                 }
             }
+        }
+
+        [HttpGet]
+        public ActionResult Close()
+        {
+            Session.Abandon();
+            return RedirectToAction("LogIn");
         }
     }
 }

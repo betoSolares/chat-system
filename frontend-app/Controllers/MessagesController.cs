@@ -18,56 +18,60 @@ namespace frontend_app.Controllers
         [HttpGet]
         public ActionResult Inbox()
         {
-            (HttpResponseMessage result, Task<string> readTask) = new Requests<int>().Get(Session["token"].ToString(), "contact/mycontacts/" + Session["username"]);
-            if (result.IsSuccessStatusCode)
+            if (Session["username"] != null)
             {
-                (HttpResponseMessage newResult, Task<string> newTask) = new Requests<int>().Get(Session["token"].ToString(), "conversations/conversations/" + Session["username"]);
+                (HttpResponseMessage result, Task<string> readTask) = new Requests<int>().Get(Session["token"].ToString(), "contact/mycontacts/" + Session["username"]);
+                if (result.IsSuccessStatusCode)
+                {
+                    (HttpResponseMessage newResult, Task<string> newTask) = new Requests<int>().Get(Session["token"].ToString(), "conversations/conversations/" + Session["username"]);
 
-                JObject json = JObject.Parse(readTask.Result);
-                JArray array = (JArray)json["contacts"];
-                List<Contact> contacts = array.ToObject<List<Contact>>();
+                    JObject json = JObject.Parse(readTask.Result);
+                    JArray array = (JArray)json["contacts"];
+                    List<Contact> contacts = array.ToObject<List<Contact>>();
 
-                if (newResult.IsSuccessStatusCode)
-                {
-                    json = JObject.Parse(newTask.Result);
-                    array = (JArray)json["conversations"];
-                    List<Conversation> conversations = array.ToObject<List<Conversation>>();
-                    ViewBag.Error = "NO";
-                    ViewBag.Contacts = contacts;
-                    ViewBag.Conversations = conversations;
-                    return View();
-                }
-                else if (newResult.StatusCode == HttpStatusCode.NotFound)
-                {
-                    ViewBag.Error = "Conversations";
-                    ViewBag.Contacts = contacts;
-                    return View();
-                }
-                else if (newResult.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    return View("~/Views/Shared/Unauthorize.cshtml");
+                    if (newResult.IsSuccessStatusCode)
+                    {
+                        json = JObject.Parse(newTask.Result);
+                        array = (JArray)json["conversations"];
+                        List<Conversation> conversations = array.ToObject<List<Conversation>>();
+                        ViewBag.Error = "NO";
+                        ViewBag.Contacts = contacts;
+                        ViewBag.Conversations = conversations;
+                        return View();
+                    }
+                    else if (newResult.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        ViewBag.Error = "Conversations";
+                        ViewBag.Contacts = contacts;
+                        return View();
+                    }
+                    else if (newResult.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        return View("~/Views/Shared/Unauthorize.cshtml");
+                    }
+                    else
+                    {
+                        return View("~/Views/Shared/Error.cshtml");
+                    }
                 }
                 else
                 {
-                    return View("~/Views/Shared/Error.cshtml");
+                    if (result.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        ViewBag.Error = "Contacts";
+                        return View();
+                    }
+                    else if (result.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        return View("~/Views/Shared/Unauthorize.cshtml");
+                    }
+                    else
+                    {
+                        return View("~/Views/Shared/Error.cshtml");
+                    }
                 }
             }
-            else
-            {
-                if (result.StatusCode == HttpStatusCode.NotFound)
-                {
-                    ViewBag.Error = "Contacts";
-                    return View();
-                }
-                else if (result.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    return View("~/Views/Shared/Unauthorize.cshtml");
-                }
-                else
-                {
-                    return View("~/Views/Shared/Error.cshtml");
-                }
-            }
+            return RedirectToAction("LogIn", "Authentication");
         }
 
         // Send a new message
@@ -183,49 +187,53 @@ namespace frontend_app.Controllers
         [HttpGet]
         public ActionResult GetMessages(string username)
         {
-            (HttpResponseMessage result, Task<string> readTask) = new Requests<int>().Get(Session["token"].ToString(), "conversations/messages/" + Session["username"].ToString() + "/" + username);
-            if (result.IsSuccessStatusCode)
+            if (Session["username"] != null)
             {
-                JObject json = JObject.Parse(readTask.Result);
-                JArray array = (JArray)json["messages"];
-                List<MessageReceive> messages = array.ToObject<List<MessageReceive>>();
-                List<Message> _messages = new List<Message>();
-                foreach(MessageReceive message in messages)
+                (HttpResponseMessage result, Task<string> readTask) = new Requests<int>().Get(Session["token"].ToString(), "conversations/messages/" + Session["username"].ToString() + "/" + username);
+                if (result.IsSuccessStatusCode)
                 {
-                    Message newMessage = new Message()
+                    JObject json = JObject.Parse(readTask.Result);
+                    JArray array = (JArray)json["messages"];
+                    List<MessageReceive> messages = array.ToObject<List<MessageReceive>>();
+                    List<Message> _messages = new List<Message>();
+                    foreach (MessageReceive message in messages)
                     {
-                        From = message.From,
-                        Path = message.Path,
-                        IsFile = message.IsFile,
-                        Content = DecryptText(message.Content)
-                    };
-                    if (message.From.Equals(Session["username"].ToString()))
-                        newMessage.IsFromMe = true;
-                    else
-                        newMessage.IsFromMe = false;
-                    _messages.Add(newMessage);
-                }
-                ViewBag.Error = "no";
-                ViewBag.ContactUser = username;
-                ViewBag.Messages = _messages;
-                return View();
-            }
-            else
-            {
-                if (result.StatusCode == HttpStatusCode.NotFound)
-                {
-                    ViewBag.Error = "NOT FOUND";
+                        Message newMessage = new Message()
+                        {
+                            From = message.From,
+                            Path = message.Path,
+                            IsFile = message.IsFile,
+                            Content = DecryptText(message.Content)
+                        };
+                        if (message.From.Equals(Session["username"].ToString()))
+                            newMessage.IsFromMe = true;
+                        else
+                            newMessage.IsFromMe = false;
+                        _messages.Add(newMessage);
+                    }
+                    ViewBag.Error = "no";
+                    ViewBag.ContactUser = username;
+                    ViewBag.Messages = _messages;
                     return View();
-                }
-                else if (result.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    return View("~/Views/Shared/Unauthorize.cshtml");
                 }
                 else
                 {
-                    return View("~/Views/Shared/Error.cshtml");
+                    if (result.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        ViewBag.Error = "NOT FOUND";
+                        return View();
+                    }
+                    else if (result.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        return View("~/Views/Shared/Unauthorize.cshtml");
+                    }
+                    else
+                    {
+                        return View("~/Views/Shared/Error.cshtml");
+                    }
                 }
             }
+            return RedirectToAction("LogIn", "Authentication");
         }
 
         /// <summary>Encrypt the text</summary>

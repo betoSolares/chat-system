@@ -14,9 +14,13 @@ namespace frontend_app.Controllers
         [HttpGet]
         public ActionResult Find()
         {
-            ViewBag.Error = "NO";
-            ViewBag.Contacts = null;
-            return View();
+            if (Session["username"] != null)
+            {
+                ViewBag.Error = "NO";
+                ViewBag.Contacts = null;
+                return View();
+            }
+            return RedirectToAction("LogIn", "Authentication");
         }
         
         [HttpPost]
@@ -129,32 +133,36 @@ namespace frontend_app.Controllers
         [HttpGet]
         public ActionResult Requests()
         {
-            (HttpResponseMessage result, Task<string> readTask) = new Requests<int>().Get(Session["token"].ToString(), "contact/requests/" + Session["username"]);
-            if (result.IsSuccessStatusCode)
+            if (Session["username"] != null)
             {
-                JObject json = JObject.Parse(readTask.Result);
-                JArray array = (JArray)json["contacts"];
-                List<Contact> contacts = array.ToObject<List<Contact>>();
-                ViewBag.ERROR = "NO";
-                ViewBag.Contacts = contacts;
-                return View();
-            }
-            else
-            {
-                if (result.StatusCode == HttpStatusCode.NotFound)
+                (HttpResponseMessage result, Task<string> readTask) = new Requests<int>().Get(Session["token"].ToString(), "contact/requests/" + Session["username"]);
+                if (result.IsSuccessStatusCode)
                 {
-                    ViewBag.ERROR = "YES";
+                    JObject json = JObject.Parse(readTask.Result);
+                    JArray array = (JArray)json["contacts"];
+                    List<Contact> contacts = array.ToObject<List<Contact>>();
+                    ViewBag.ERROR = "NO";
+                    ViewBag.Contacts = contacts;
                     return View();
-                }
-                else if (result.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    return View("~/Views/Shared/Unauthorize.cshtml");
                 }
                 else
                 {
-                    return View("~/Views/Shared/Error.cshtml");
+                    if (result.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        ViewBag.ERROR = "YES";
+                        return View();
+                    }
+                    else if (result.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        return View("~/Views/Shared/Unauthorize.cshtml");
+                    }
+                    else
+                    {
+                        return View("~/Views/Shared/Error.cshtml");
+                    }
                 }
             }
+            return RedirectToAction("LogIn", "Authentication");
         }
         
         [HttpPost]
@@ -226,32 +234,36 @@ namespace frontend_app.Controllers
         [HttpGet]
         public ActionResult MyContacts()
         {
-            (HttpResponseMessage result, Task<string> readTask) = new Requests<int>().Get(Session["token"].ToString(), "contact/mycontacts/" + Session["username"]);
-            if (result.IsSuccessStatusCode)
+            if (Session["username"] != null)
             {
-                JObject json = JObject.Parse(readTask.Result);
-                JArray array = (JArray)json["contacts"];
-                List<Contact> contacts = array.ToObject<List<Contact>>();
-                ViewBag.ERROR = "NO";
-                ViewBag.Contacts = contacts;
-                return View();
-            }
-            else
-            {
-                if (result.StatusCode == HttpStatusCode.NotFound)
+                (HttpResponseMessage result, Task<string> readTask) = new Requests<int>().Get(Session["token"].ToString(), "contact/mycontacts/" + Session["username"]);
+                if (result.IsSuccessStatusCode)
                 {
-                    ViewBag.ERROR = "YES";
+                    JObject json = JObject.Parse(readTask.Result);
+                    JArray array = (JArray)json["contacts"];
+                    List<Contact> contacts = array.ToObject<List<Contact>>();
+                    ViewBag.ERROR = "NO";
+                    ViewBag.Contacts = contacts;
                     return View();
-                }
-                else if (result.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    return View("~/Views/Shared/Unauthorize.cshtml");
                 }
                 else
                 {
-                    return View("~/Views/Shared/Error.cshtml");
+                    if (result.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        ViewBag.ERROR = "YES";
+                        return View();
+                    }
+                    else if (result.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        return View("~/Views/Shared/Unauthorize.cshtml");
+                    }
+                    else
+                    {
+                        return View("~/Views/Shared/Error.cshtml");
+                    }
                 }
             }
+            return RedirectToAction("LogIn", "Authentication");
         }
     }
 }
