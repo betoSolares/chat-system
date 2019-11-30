@@ -106,29 +106,52 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Scripts\alerts.js" />
+    <Content Include="Scripts\conversation.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\menu.js" />
     <Content Include="Styles\alerts.css" />
     <Content Include="Styles\authentication.css" />
+    <Content Include="Styles\chat.css" />
+    <Content Include="Styles\menu.css" />
+    <Content Include="Styles\modal-box.css" />
+    <Content Include="Styles\shared.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
+    <Compile Include="Controllers\ContactsController.cs" />
+    <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Requests.cs" />
     <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\Contact.cs" />
+    <Compile Include="Models\Conversation.cs" />
+    <Compile Include="Models\FindContact.cs" />
     <Compile Include="Models\LogIn.cs" />
+    <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\MessageReceive.cs" />
+    <Compile Include="Models\MessageToSent.cs" />
     <Compile Include="Models\SignUp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
     <None Include="packages.config" />
+    <Content Include="Views\Shared\Layout.cshtml" />
     <Content Include="Views\Shared\Authentication.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\Unauthorize.cshtml" />
     <Content Include="Views\Authentication\SignUp.cshtml" />
     <Content Include="Views\Authentication\LogIn.cshtml" />
+    <Content Include="Views\Contacts\Find.cshtml" />
+    <Content Include="Views\Contacts\MyContacts.cshtml" />
+    <Content Include="Views\Contacts\Requests.cshtml" />
+    <Content Include="Views\Messages\Inbox.cshtml" />
+    <Content Include="Views\Messages\GetMessages.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -138,6 +161,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\external-process\external-process.csproj">
+      <Project>{07e22a83-08e0-4ae4-843b-4c43a3bdd2b9}</Project>
+      <Name>external-process</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

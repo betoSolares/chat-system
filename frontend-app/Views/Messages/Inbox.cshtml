@@ -2,7 +2,7 @@
     ViewBag.Title = "Inbox";
     Layout = "~/Views/Shared/Layout.cshtml";
 }
-@if (ViewBag.ERROR.Equals("YES"))
+@if (ViewBag.Error.Equals("Contacts"))
 {
     <div id="no-item" class="hero is-medium is-bold">
         <div class="hero-body has-text-centered">
@@ -22,5 +22,114 @@
                 </div>
             </div>
         </div>
+    </div>
+}
+else if (ViewBag.Error.Equals("Conversations"))
+{
+    <div id="no-item" class="hero is-medium is-bold">
+        <div class="hero-body has-text-centered">
+            <div class="section ">
+                <div class="title has-text-white">
+                    <span class="icon has-text-white">
+                        <i class="fas fa-users fa-7x"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="container has-text-white">
+                <div class="subtitle ">
+                    <p class="has-text-white">Inicia una conversación</p><br />
+                    <a class="button my-button2 has-text-white" id="CreateNewConversation">
+                        <strong>Iniciar Conversación</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box" id="newMessageBox">
+        <div id="alertBox" class="alertBox" style="display: none">
+            <span class="closebtn" id="closebtn">&times;</span>
+            <p id="message"></p>
+        </div>
+        <form method="post" action="/Messages/SendMessage">
+            <div class="info">
+                <div class="boxHeader">
+                    <span class="closebtn closeInfo" id="closeInfo">&times;</span>
+                </div>
+                <div class="boxBody">
+                    <label class="label">Enviar a</label>
+                    <div class="select">
+                        <select id="dropdown-option" name="username">
+                            @foreach (var item in ViewBag.Contacts)
+                            {
+                                <option>@item.Username</option>
+                            }
+                        </select>
+                    </div><br />
+                    <label class="label">Mensaje</label>
+                    <div class="control">
+                        <textarea class="textarea" placeholder="Mensaje" name="content"></textarea>
+                    </div>
+                </div>
+                <div class="boxFooter">
+                    <input type="hidden" name="type" value="new" />
+                    <button type="submit" class="button my-button1 has-text-white">
+                        Enviar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+}
+else
+{
+    <center>
+        <button id="CreateNewConversation" class="button my-button2 has-text-white">Nueva Conversación</button>
+    </center>
+    <table class="table">
+        <tbody>
+            @foreach (var item in ViewBag.Conversations)
+            {
+                <tr>
+                    <td>@item.Username</td>
+                    <td>@item.GivenName</td>
+                    <td>@item.FamilyName</td>
+                    <td class="button my-button2 has-text-white">@Html.ActionLink("Ver mensajes", "GetMessages", new { username = item.Username })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="box" id="newMessageBox">
+        <div id="alertBox" class="alertBox" style="display: none">
+            <span class="closebtn" id="closebtn">&times;</span>
+            <p id="message"></p>
+        </div>
+        <form method="post" action="/Messages/SendMessage">
+            <div class="info">
+                <div class="boxHeader">
+                    <span class="closebtn closeInfo" id="closeInfo">&times;</span>
+                </div>
+                <div class="boxBody">
+                    <label class="label">Enviar a</label>
+                    <div class="select">
+                        <select id="dropdown-option" name="username">
+                            @foreach (var item in ViewBag.Contacts)
+                            {
+                                <option>@item.Username</option>
+                            }
+                        </select>
+                    </div><br />
+                    <label class="label">Mensaje</label>
+                    <div class="control">
+                        <textarea class="textarea" placeholder="Textarea" name="content"></textarea>
+                    </div>
+                </div>
+                <div class="boxFooter">
+                    <input type="hidden" name="type" value="new" />
+                    <button type="submit" class="button my-button1 has-text-white">
+                        Enviar
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
 }

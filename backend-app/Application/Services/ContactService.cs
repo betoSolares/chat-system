@@ -11,7 +11,7 @@ namespace backend_app.Application.Services
     {
         private readonly IAccountCollection _accountCollection;
         private readonly IContactCollection _contactCollection;
-        
+
         /// <summary>Constructor</summary>
         /// <param name="accountCollection">The account collection</param>
         /// <param name="configuration">The configuration of the application</param>
@@ -20,7 +20,7 @@ namespace backend_app.Application.Services
             _accountCollection = accountCollection;
             _contactCollection = contactCollection;
         }
-        
+
         /// <summary>Accept a new request</summary>
         /// <param name="username">The username</param>
         /// <param name="otheruser">The username of the other account</param>
@@ -45,7 +45,7 @@ namespace backend_app.Application.Services
                 return new Response<Contact>(ex.ToString(), 500);
             }
         }
-        
+
         /// <summary>Delete a request that was sent</summary>
         /// <param name="username">The username</param>
         /// <param name="otheruser">The username of the other account</param>
@@ -70,7 +70,7 @@ namespace backend_app.Application.Services
                 return new Response<Contact>(ex.ToString(), 500);
             }
         }
-        
+
         /// <summary>Get all the contacts</summary>
         /// <param name="username">The user to get the contacts</param>
         /// <returns>A list with all the contacts</returns>
@@ -93,7 +93,7 @@ namespace backend_app.Application.Services
                 return new Response<List<string>>(ex.ToString(), 500);
             }
         }
-        
+
         /// <summary>Get all the incoming request</summary>
         /// <param name="username">The user to get the requests</param>
         /// <returns>A list with all the incoming request</returns>
@@ -102,7 +102,7 @@ namespace backend_app.Application.Services
             try
             {
                 List<string> contacts = await _contactCollection.GetIncoming(username);
-                if (contacts.Count != 0)
+                if (contacts != null && contacts.Count != 0)
                 {
                     return new Response<List<string>>(contacts);
                 }
@@ -116,7 +116,7 @@ namespace backend_app.Application.Services
                 return new Response<List<string>>(ex.ToString(), 500);
             }
         }
-        
+
         /// <summary>Get all the sent request</summary>
         /// <param name="username">The user to get the requests</param>
         /// <returns>A list with all the sent request</returns>
@@ -125,7 +125,7 @@ namespace backend_app.Application.Services
             try
             {
                 List<string> contacts = await _contactCollection.GetSent(username);
-                if (contacts.Count != 0)
+                if (contacts != null && contacts.Count != 0)
                 {
                     return new Response<List<string>>(contacts);
                 }
@@ -139,7 +139,7 @@ namespace backend_app.Application.Services
                 return new Response<List<string>>(ex.ToString(), 500);
             }
         }
-        
+
         /// <summary>Delete an incoming request</summary>
         /// <param name="username">The username</param>
         /// <param name="otheruser">The username of the other account</param>
@@ -164,7 +164,7 @@ namespace backend_app.Application.Services
                 return new Response<Contact>(ex.ToString(), 500);
             }
         }
-        
+
         /// <summary>Sent a new request</summary>
         /// <param name="username">The username</param>
         /// <param name="otheruser">The username of the other account</param>

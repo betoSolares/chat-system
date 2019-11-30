@@ -1,0 +1,114 @@
+﻿@{
+    ViewBag.Title = "GetMessages";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+@if (ViewBag.Error.Equals("NOT FOUND"))
+{
+    <div id="no-item" class="hero is-medium is-bold">
+        <div class="hero-body has-text-centered">
+            <div class="section ">
+                <div class="title has-text-white">
+                    <span class="icon has-text-white">
+                        <i class="fas fa-times-circle fa-7x"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="container has-text-white">
+                <div class="subtitle">
+                    <p class="has-text-white">Esta conversacion no existe</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <ul>
+        @foreach (var item in ViewBag.Messages)
+        {
+            if (item.IsFromMe)
+            {
+                <li>
+                    <article class="media">
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <strong>@item.From</strong>
+                                    <br>
+                                    @item.Content
+                                </p>
+                            </div>
+                            <nav class="level is-mobile">
+                                <div class="level-left">
+                                    <a class="level-item">
+                                        <form method="post" action="/Messages/DeleteMessage">
+                                            <input type="hidden" value="@item.Content" name="content" />
+                                            <input type="hidden" value="@ViewBag.ContactUser" name="username" />
+                                            <input class="button is-danger is-rounded" type="submit" value="Eliminar" />
+                                        </form>
+                                    </a>
+                                    <div class="level-item">
+                                        <a class="button my-button1 has-text-white" id="ModifyMessage">Modificar</a>
+                                        <div class="box" id="modifyMessage">
+                                            <div id="alertBox" class="alertBox" style="display: none">
+                                                <span class="closebtn" id="closebtn">&times;</span>
+                                                <p id="message"></p>
+                                            </div>
+                                            <form method="post" action="/Messages/ModifyMessage">
+                                                <div class="info">
+                                                    <div class="boxHeader">
+                                                        <span class="closebtn closeInfo" id="closeInfo">&times;</span>
+                                                    </div>
+                                                    <div class="boxBody">
+                                                        <input type="hidden" value="@ViewBag.ContactUser" name="username" />
+                                                        <label class="label">Mensaje antiguo</label>
+                                                        <input type="hidden" value="@item.Content" name="content" />
+                                                        <p>@item.Content</p>
+                                                        <label class="label">Mensaje nuevo</label>
+                                                        <div class="control">
+                                                            <textarea class="textarea" placeholder="Textarea" name="newContent"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="boxFooter">
+                                                        <input type="hidden" name="type" value="new" />
+                                                        <button type="submit" class="button my-button1 has-text-white">
+                                                            Enviar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </nav>
+                        </div>
+                    </article>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <article class="media">
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <strong>@item.From</strong>
+                                    <br>
+                                    @item.Content
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                </li>
+            }
+        }
+    </ul>
+    <div class="fix-footer">
+        <form method="post" action="/Messages/SendMessage">
+            <input type="hidden" value="chat" name="type" />
+            <input type="hidden" value="@ViewBag.ContactUser" name="username" />
+            <textarea class="textarea" placeholder="Textarea" name="content"></textarea>
+            <input class="button is-danger is-rounded" type="submit" value="Enviar" />
+        </form>
+    </div>
+}

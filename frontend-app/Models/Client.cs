@@ -8,7 +8,7 @@ namespace frontend_app.Models
         
         public Client()
         {
-            URI = new Uri("http://localhost:50676/api/");
+            URI = new Uri("http://localhost:52968/api/");
         }
     }
 }

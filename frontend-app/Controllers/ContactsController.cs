@@ -1,9 +1,9 @@
-﻿using frontend_app.Models;
+﻿using frontend_app.Helpers;
+using frontend_app.Models;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -11,7 +11,6 @@ namespace frontend_app.Controllers
 {
     public class ContactsController : Controller
     {
-        // GET: Contacts
         [HttpGet]
         public ActionResult Find()
         {
@@ -28,18 +27,9 @@ namespace frontend_app.Controllers
                 Username = Session["username"].ToString(),
                 Otheruser = username
             };
-            HttpClient client = new HttpClient
-            {
-                BaseAddress = new Client().URI
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Session["token"].ToString());
-            Task<HttpResponseMessage> response = client.PostAsJsonAsync("contact/specific", findContact);
-            response.Wait();
-            client.Dispose();
-            
-            HttpResponseMessage result = response.Result;
-            Task<string> readTask = result.Content.ReadAsStringAsync();
-            readTask.Wait();
+            (HttpResponseMessage result, Task<string> readTask) = new Requests<FindContact>().Post(Session["token"].ToString(),
+                                                                                                  "contact/specific",
+                                                                                                  findContact);
             if (result.IsSuccessStatusCode)
             {
                 JObject json = JObject.Parse(readTask.Result);
@@ -76,18 +66,9 @@ namespace frontend_app.Controllers
                 Username = Session["username"].ToString(),
                 Otheruser = username
             };
-            HttpClient client = new HttpClient
-            {
-                BaseAddress = new Client().URI
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Session["token"].ToString());
-            Task<HttpResponseMessage> response = client.PostAsJsonAsync("contact/add", findContact);
-            response.Wait();
-            client.Dispose();
-            
-            HttpResponseMessage result = response.Result;
-            Task<string> readTask = result.Content.ReadAsStringAsync();
-            readTask.Wait();
+            (HttpResponseMessage result, Task<string> readTask) = new Requests<FindContact>().Post(Session["token"].ToString(),
+                                                                                                  "contact/add",
+                                                                                                  findContact);
             if (result.IsSuccessStatusCode)
             {
                 ViewBag.Error = "NO";
@@ -119,18 +100,9 @@ namespace frontend_app.Controllers
                 Username = Session["username"].ToString(),
                 Otheruser = username
             };
-            HttpClient client = new HttpClient
-            {
-                BaseAddress = new Client().URI
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Session["token"].ToString());
-            Task<HttpResponseMessage> response = client.PostAsJsonAsync("contact/remove", findContact);
-            response.Wait();
-            client.Dispose();
-            
-            HttpResponseMessage result = response.Result;
-            Task<string> readTask = result.Content.ReadAsStringAsync();
-            readTask.Wait();
+            (HttpResponseMessage result, Task<string> readTask) = new Requests<FindContact>().Post(Session["token"].ToString(),
+                                                                                                  "contact/remove",
+                                                                                                  findContact);
             if (result.IsSuccessStatusCode)
             {
                 ViewBag.Error = "NO";
@@ -157,18 +129,7 @@ namespace frontend_app.Controllers
         [HttpGet]
         public ActionResult Requests()
         {
-            HttpClient client = new HttpClient
-            {
-                BaseAddress = new Client().URI
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Session["token"].ToString());
-            Task<HttpResponseMessage> response = client.GetAsync("contact/requests/" + Session["username"]);
-            response.Wait();
-            client.Dispose();
-            
-            HttpResponseMessage result = response.Result;
-            Task<string> readTask = result.Content.ReadAsStringAsync();
-            readTask.Wait();
+            (HttpResponseMessage result, Task<string> readTask) = new Requests<int>().Get(Session["token"].ToString(), "contact/requests/" + Session["username"]);
             if (result.IsSuccessStatusCode)
             {
                 JObject json = JObject.Parse(readTask.Result);
@@ -204,18 +165,9 @@ namespace frontend_app.Controllers
                 Username = Session["username"].ToString(),
                 Otheruser = username
             };
-            HttpClient client = new HttpClient
-            {
-                BaseAddress = new Client().URI
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Session["token"].ToString());
-            Task<HttpResponseMessage> response = client.PostAsJsonAsync("contact/accept", findContact);
-            response.Wait();
-            client.Dispose();
-            
-            HttpResponseMessage result = response.Result;
-            Task<string> readTask = result.Content.ReadAsStringAsync();
-            readTask.Wait();
+            (HttpResponseMessage result, Task<string> readTask) = new Requests<FindContact>().Post(Session["token"].ToString(),
+                                                                                                  "contact/accept",
+                                                                                                  findContact);
             if (result.IsSuccessStatusCode)
             {
                 return RedirectToAction("Requests");
@@ -246,18 +198,9 @@ namespace frontend_app.Controllers
                 Username = Session["username"].ToString(),
                 Otheruser = username
             };
-            HttpClient client = new HttpClient
-            {
-                BaseAddress = new Client().URI
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Session["token"].ToString());
-            Task<HttpResponseMessage> response = client.PostAsJsonAsync("contact/decline", findContact);
-            response.Wait();
-            client.Dispose();
-            
-            HttpResponseMessage result = response.Result;
-            Task<string> readTask = result.Content.ReadAsStringAsync();
-            readTask.Wait();
+            (HttpResponseMessage result, Task<string> readTask) = new Requests<FindContact>().Post(Session["token"].ToString(),
+                                                                                                  "contact/decline",
+                                                                                                  findContact);
             if (result.IsSuccessStatusCode)
             {
                 return RedirectToAction("Requests");
@@ -283,18 +226,7 @@ namespace frontend_app.Controllers
         [HttpGet]
         public ActionResult MyContacts()
         {
-            HttpClient client = new HttpClient
-            {
-                BaseAddress = new Client().URI
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Session["token"].ToString());
-            Task<HttpResponseMessage> response = client.GetAsync("contact/mycontacts/" + Session["username"]);
-            response.Wait();
-            client.Dispose();
-            
-            HttpResponseMessage result = response.Result;
-            Task<string> readTask = result.Content.ReadAsStringAsync();
-            readTask.Wait();
+            (HttpResponseMessage result, Task<string> readTask) = new Requests<int>().Get(Session["token"].ToString(), "contact/mycontacts/" + Session["username"]);
             if (result.IsSuccessStatusCode)
             {
                 JObject json = JObject.Parse(readTask.Result);
