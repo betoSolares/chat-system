@@ -2,6 +2,7 @@
 using frontend_app.Helpers;
 using frontend_app.Models;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -227,28 +228,36 @@ namespace frontend_app.Controllers
             }
         }
 
+        /// <summary>Encrypt the text</summary>
+        /// <param name="text">the text to encrypt</param>
+        /// <returns>The new text</returns>
         private string EncryptText(string text)
         {
             SDES sdes = new SDES();
-            byte[] bytes = Encoding.UTF8.GetBytes(text);
-            List<byte> encrypted = new List<byte>();
-            foreach(byte Byte in bytes)
+            string newText = string.Empty;
+            foreach (char character in text)
             {
-                encrypted.Add(sdes.Encrypt(Byte, 898));
+                byte myByte = Convert.ToByte(character);
+                byte encrypted = sdes.Encrypt(myByte, 899);
+                newText += Convert.ToChar(encrypted);
             }
-            return Encoding.UTF8.GetString(encrypted.ToArray());
+            return newText;
         }
 
+        /// <summary>Decrypt the text</summary>
+        /// <param name="text">the text to decrypt</param>
+        /// <returns>The new text</returns>
         private string DecryptText(string text)
         {
             SDES sdes = new SDES();
-            byte[] bytes = Encoding.UTF8.GetBytes(text);
-            List<byte> decrypted = new List<byte>();
-            foreach(byte Byte in bytes)
+            string newText = string.Empty;
+            foreach (char character in text)
             {
-                decrypted.Add(sdes.Decrypt(Byte, 898));
+                byte myByte = Convert.ToByte(character);
+                byte decrypt = sdes.Decrypt(myByte, 899);
+                newText += Convert.ToChar(decrypt);
             }
-            return Encoding.UTF8.GetString(decrypted.ToArray());
+            return newText;
         }
     }
 }
